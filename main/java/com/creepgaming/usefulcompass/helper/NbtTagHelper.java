@@ -120,7 +120,8 @@ public class NbtTagHelper {
 		} else {
 			int[] locArray = new int[] {x, z};
 			int index = getIndexFromNbt(stack);
-			String location = "loc" + index +1;
+			int newIndex = index + 1;
+			String location = "loc" + newIndex;
 			NBTTagCompound tag = stack.getTagCompound();
 			tag.removeTag("Index");
 			tag.setInteger("Index", index+1);
