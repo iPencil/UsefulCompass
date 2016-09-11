@@ -1,23 +1,15 @@
 package com.creepgaming.usefulcompass;
 
 import org.apache.logging.log4j.Logger;
-
-import com.creepgaming.usefulcompass.items.ItemCompass;
 import com.creepgaming.usefulcompass.proxy.CommonProxy;
-
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = UsefulCompass.MODID, name = UsefulCompass.MODNAME, version = UsefulCompass.VERSION, useMetadata = true)
 public class UsefulCompass {
-	public static final Item itemCompass = new ItemCompass().setUnlocalizedName("itemCompass")
-			.setCreativeTab(CreativeTabs.TOOLS);
 
 	public static final String MODID = "usefulcompass";
 	public static final String MODNAME = "UsefulCompass";
@@ -31,11 +23,13 @@ public class UsefulCompass {
 
 	public static Logger logger;
 
+	public static Boolean isDebug = true;
+	
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 		proxy.preInit(event);
-		GameRegistry.register(itemCompass.setRegistryName("item_compass"));
+		
 	}
 
 	@Mod.EventHandler
