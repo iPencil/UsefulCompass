@@ -1,0 +1,16 @@
+[
+{
+  "modid": "nof3",
+  "name": "NoF3",
+  "description": "Removes the F3 debug screen.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["CreeperShift"],
+  "credits": "CreeperShift",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
