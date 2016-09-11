@@ -1,9 +1,7 @@
 package com.creepgaming.usefulcompass.items;
 
 import javax.annotation.Nullable;
-
-import com.creepgaming.usefulcompass.UsefulCompass;
-
+import com.creepgaming.usefulcompass.helper.NbtTagHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItemFrame;
@@ -17,6 +15,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -104,22 +103,16 @@ public class ItemCompass extends Item {
 			}
 
 			/*
-			 * This method calculates the angle the compass needs to be pointing
-			 * at so it leads to the desired location. It first checks if the
-			 * stack has a tag compound at all, and then checks if the required
-			 * (x & z) are present. If the first check is not passed, it
-			 * defaults to the spawn location to avoid a crash.
+			 * Uses the NbtTagHelper class to get the currently selected
+			 * location
 			 */
 
 			@SideOnly(Side.CLIENT)
 			private double getLocationToAngle(World world, Entity entity, ItemStack stack) {
-				if (stack.hasTagCompound() == true && stack.getTagCompound().hasKey("x")
-						&& stack.getTagCompound().hasKey("z")) {
+				if (NbtTagHelper.hasRequiredTags(stack)) {
 
-					int x = stack.getTagCompound().getInteger("x");
-					int z = stack.getTagCompound().getInteger("z");
-
-					return Math.atan2((double) z - entity.posZ, (double) x - entity.posX);
+					return Math.atan2((double) NbtTagHelper.getLocationZ(stack) - entity.posZ,
+							(double) NbtTagHelper.getLocationX(stack) - entity.posX);
 
 				} else {
 
@@ -132,49 +125,37 @@ public class ItemCompass extends Item {
 	}
 
 	/*
-	 * Pre-Rework NBT based target finding // method to write z&x coords on
-	 * right click
+	 * NBT Magic Happens here
 	 * 
-	 * @Override public ActionResult<ItemStack> onItemRightClick(ItemStack
-	 * itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-	 *
-	 * 
-	 * debug code if (worldIn.isRemote && !playerIn.isSneaking()){
-	 * 
-	 * Boolean hasUX = itemStackIn.getTagCompound().hasUniqueId("x"); Boolean
-	 * hasUZ = itemStackIn.getTagCompound().hasUniqueId("z"); Boolean hasX =
-	 * itemStackIn.getTagCompound().hasKey("x"); Boolean hasZ =
-	 * itemStackIn.getTagCompound().hasKey("z");
-	 * 
-	 * playerIn.addChatComponentMessage(new TextComponentString(
-	 * "It has the following" + hasUX + hasUZ + hasX + hasZ)); return new
-	 * ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
-	 * 
-	 * }
-	 * 
-	 *
-	 * 
-	 * // remove coords if they already exist before applying new ones if
-	 * (worldIn.isRemote && playerIn.isSneaking()) {
-	 * 
-	 * if (itemStackIn.hasTagCompound() == true &&
-	 * itemStackIn.getTagCompound().hasKey("x") &&
-	 * itemStackIn.getTagCompound().hasKey("z")) {
-	 * itemStackIn.getTagCompound().removeTag("x");
-	 * itemStackIn.getTagCompound().removeTag("z"); }
-	 * 
-	 * // create new NBT compound and attatch z &x coords NBTTagCompound nbtTag
-	 * = new NBTTagCompound(); nbtTag.setInteger("x",
-	 * playerIn.getPosition().getX()); nbtTag.setInteger("z",
-	 * playerIn.getPosition().getZ());
-	 * 
-	 * itemStackIn.setTagCompound(nbtTag); playerIn.addChatComponentMessage(new
-	 * TextComponentString("Location Stored!")); return new
-	 * ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn); } return
-	 * new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-	 * 
-	 * }
 	 * 
 	 */
+
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
+			EnumHand hand) {
+
+		if (!worldIn.isRemote && playerIn.isSneaking()) {
+			NbtTagHelper.saveLocationToNbt(itemStackIn, playerIn.getPosition().getX(), playerIn.getPosition().getZ(),
+					playerIn);
+		}
+
+		if (!worldIn.isRemote && !playerIn.isSneaking()) {
+			NbtTagHelper.iterateSelector(itemStackIn, playerIn);
+		}
+
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+	}
+
+	@Override
+	public boolean onEntitySwing(EntityLivingBase entity, ItemStack stack) {
+
+		if (!entity.getEntityWorld().isRemote) {
+
+			entity.addChatMessage(new TextComponentString("swing swing"));
+
+		}
+
+		return super.onEntitySwing(entity, stack);
+	}
 
 }
