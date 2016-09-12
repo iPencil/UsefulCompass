@@ -1,6 +1,7 @@
 package com.creepgaming.usefulcompass.items;
 
 import javax.annotation.Nullable;
+import com.creepgaming.usefulcompass.UsefulCompass;
 import com.creepgaming.usefulcompass.helper.NbtTagHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,7 +16,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -134,11 +134,13 @@ public class ItemCompass extends Item {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
 			EnumHand hand) {
 
-		if (!worldIn.isRemote && playerIn.isSneaking()) {
-			NbtTagHelper.saveLocationToNbt(itemStackIn, playerIn.getPosition().getX(), playerIn.getPosition().getZ(),
-					playerIn);
+		if(worldIn.isRemote && playerIn.isSneaking()){
+			
+			playerIn.openGui(UsefulCompass.instance, 0, worldIn, playerIn.getPosition().getX(), playerIn.getPosition().getY(), playerIn.getPosition().getZ());
+			
 		}
-
+		
+		
 		if (!worldIn.isRemote && !playerIn.isSneaking()) {
 			NbtTagHelper.iterateSelector(itemStackIn, playerIn);
 		}
@@ -149,11 +151,12 @@ public class ItemCompass extends Item {
 	@Override
 	public boolean onEntitySwing(EntityLivingBase entity, ItemStack stack) {
 
-		if (!entity.getEntityWorld().isRemote) {
+		if (entity.getEntityWorld().isRemote && entity.isSneaking()) {
 
-			entity.addChatMessage(new TextComponentString("swing swing"));
+		((EntityPlayer) entity).openGui(UsefulCompass.instance, 1, entity.worldObj, entity.getPosition().getX(), entity.getPosition().getY(), entity.getPosition().getZ());
 
 		}
+		
 
 		return super.onEntitySwing(entity, stack);
 	}

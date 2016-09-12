@@ -35,6 +35,7 @@ public class UsefulCompass {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent e) {
 		proxy.init(e);
+		
 
 	}
 

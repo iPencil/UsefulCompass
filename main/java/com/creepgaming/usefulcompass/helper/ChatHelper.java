@@ -12,14 +12,22 @@ public class ChatHelper {
 	
 	public static void notifyLocationCreate(EntityPlayer p, String loc){
 		
-		p.addChatComponentMessage(new TextComponentString(TextFormatting.DARK_AQUA + "Location " + TextFormatting.GOLD + loc + TextFormatting.DARK_AQUA + " created and selected."));
+		p.addChatComponentMessage(new TextComponentString(TextFormatting.GOLD + loc + TextFormatting.DARK_AQUA + " created and selected."));
+	}
+	
+	public static void notifyLocationDelete(EntityPlayer p, String loc){
 		
-		
+		p.addChatComponentMessage(new TextComponentString(TextFormatting.GOLD + loc + TextFormatting.DARK_AQUA + " was deleted."));
 	}
 	
 	public static void notifyLocationSelect(EntityPlayer p, String loc){
 		
-		p.addChatComponentMessage(new TextComponentString(TextFormatting.DARK_GREEN + "Location " + TextFormatting.GOLD + loc + TextFormatting.DARK_GREEN + " selected."));
+		p.addChatComponentMessage(new TextComponentString(TextFormatting.GOLD + loc + TextFormatting.DARK_GREEN + " selected."));
+	}
+	
+	public static void notifyPlayerLocationFull(EntityPlayer p){
+		p.addChatComponentMessage(new TextComponentString(TextFormatting.DARK_AQUA + "Cannot store more than 10 locations!"));
+		
 	}
 	
 	
