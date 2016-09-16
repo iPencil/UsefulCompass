@@ -1,8 +1,8 @@
 [
 {
-  "modid": "nof3",
-  "name": "NoF3",
-  "description": "Removes the F3 debug screen.",
+  "modid": "usefulcompass",
+  "name": "UsefulCompass",
+  "description": "Adds a Compass and a GPS locator",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",

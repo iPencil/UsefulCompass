@@ -121,7 +121,7 @@ public class NbtTagHelper {
 			stack.setTagCompound(tag);
 			ChatHelper.notifyLocationCreate(p, locName);
 
-		} else if (getIndexFromNbt(stack) < 10) {
+		} else if (getIndexFromNbt(stack) < 9) {
 			int[] locArray = new int[] { x, z };
 			int index = getIndexFromNbt(stack);
 			int newIndex = index + 1;
@@ -200,12 +200,9 @@ public class NbtTagHelper {
 				stack.setTagCompound(tag);
 			} else if (index > 0) {
 				NBTTagCompound tag = stack.getTagCompound();
-				tag.removeTag("Index");
-				tag.setInteger("Index", index - 1);
-				tag.removeTag("Selector");
-				tag.setInteger("Selector", 0);
 				tag.removeTag("name" + selector);
 				tag.removeTag("loc" + selector);
+				stack.setTagCompound(tag);
 
 				updateLocationIndex(stack, selector);
 
@@ -230,10 +227,22 @@ public class NbtTagHelper {
 				stack.setTagCompound(tag);
 
 			} else {
+				
+				int index = getIndexFromNbt(stack);
+				
+				tag.removeTag("Index");
+				tag.setInteger("Index", index - 1);
+				tag.removeTag("Selector");
+				tag.setInteger("Selector", startIndex -1);
+				
+				stack.setTagCompound(tag);
+				
 				i = 12;
 			}
 
 		}
+		
+
 
 	}
 
