@@ -5,6 +5,7 @@ import com.creepgaming.usefulcompass.handler.HandlerGui;
 import com.creepgaming.usefulcompass.handler.HandlerPackets;
 import com.creepgaming.usefulcompass.items.ItemRegister;
 import com.creepgaming.usefulcompass.recipes.CompassRecipeHandler;
+import com.creepgaming.usefulcompass.recipes.RecipeRegister;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -22,6 +23,7 @@ public class CommonProxy {
 	public void init(FMLInitializationEvent e) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(UsefulCompass.instance, new HandlerGui());
 		GameRegistry.addRecipe(new CompassRecipeHandler());
+		RecipeRegister.registerRecipes();
 		
 	}
 
