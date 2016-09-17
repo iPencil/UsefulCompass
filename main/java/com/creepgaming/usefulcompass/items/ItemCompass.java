@@ -16,7 +16,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -135,13 +134,13 @@ public class ItemCompass extends Item {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
 			EnumHand hand) {
 
-		if(worldIn.isRemote && playerIn.isSneaking() && hand == EnumHand.MAIN_HAND){
-			
-			playerIn.openGui(UsefulCompass.instance, 0, worldIn, playerIn.getPosition().getX(), playerIn.getPosition().getY(), playerIn.getPosition().getZ());
-			
+		if (worldIn.isRemote && playerIn.isSneaking() && hand == EnumHand.MAIN_HAND) {
+
+			playerIn.openGui(UsefulCompass.instance, 0, worldIn, playerIn.getPosition().getX(),
+					playerIn.getPosition().getY(), playerIn.getPosition().getZ());
+
 		}
-		
-		
+
 		if (!worldIn.isRemote && !playerIn.isSneaking()) {
 			NbtTagHelper.iterateSelector(itemStackIn, playerIn);
 		}
@@ -154,16 +153,21 @@ public class ItemCompass extends Item {
 
 		if (entity.getEntityWorld().isRemote && entity.isSneaking()) {
 
-		((EntityPlayer) entity).openGui(UsefulCompass.instance, 1, entity.worldObj, entity.getPosition().getX(), entity.getPosition().getY(), entity.getPosition().getZ());
+			((EntityPlayer) entity).openGui(UsefulCompass.instance, 1, entity.worldObj, entity.getPosition().getX(),
+					entity.getPosition().getY(), entity.getPosition().getZ());
 
 		}
-		
-		if(entity.getEntityWorld().isRemote && !entity.isSneaking()){
-			if(stack.hasTagCompound()){
-			
-			((EntityPlayer) entity).addChatComponentMessage(new TextComponentString("nbt tag= " + stack.getTagCompound().toString() ));
-		}
-		}
+		/*
+		 * Debug Function
+		 * 
+		 * if(entity.getEntityWorld().isRemote && !entity.isSneaking()){
+		 * if(stack.hasTagCompound()){
+		 * 
+		 * ((EntityPlayer) entity).addChatComponentMessage(new
+		 * TextComponentString("nbt tag= " + stack.getTagCompound().toString()
+		 * )); } }
+		 * 
+		 */
 
 		return super.onEntitySwing(entity, stack);
 	}
