@@ -135,7 +135,7 @@ public class ItemCompass extends Item {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn,
 			EnumHand hand) {
 
-		if(worldIn.isRemote && playerIn.isSneaking()){
+		if(worldIn.isRemote && playerIn.isSneaking() && hand == EnumHand.MAIN_HAND){
 			
 			playerIn.openGui(UsefulCompass.instance, 0, worldIn, playerIn.getPosition().getX(), playerIn.getPosition().getY(), playerIn.getPosition().getZ());
 			
