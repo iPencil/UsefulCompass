@@ -3,11 +3,13 @@ package com.creepgaming.usefulcompass.helper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
 
 public class NbtTagHelper {
 
 	/*
-	 * Shorter and clearer check for NBT Tags
+	 * Shorter and safe checks for NBT Tags Made so no matter where you check
+	 * for nbt tags, you always make the necessary null checks to avoid crashes!
 	 */
 
 	public static boolean hasTagCompound(ItemStack stack) {
@@ -93,7 +95,8 @@ public class NbtTagHelper {
 			tag.setInteger("Selector", selector);
 			stack.setTagCompound(tag);
 			String locName = tag.getString("name" + selector);
-			ChatHelper.notifyLocationSelect(p, locName);
+			//ChatHelper.notifyLocationSelect(p, locName);
+			stack.setStackDisplayName(TextFormatting.RESET + "Survival Compass: "+TextFormatting.DARK_AQUA + locName);
 		}
 
 	}
@@ -120,6 +123,7 @@ public class NbtTagHelper {
 			tag.setString(nameID, locName);
 			stack.setTagCompound(tag);
 			ChatHelper.notifyLocationCreate(p, locName);
+			stack.setStackDisplayName(TextFormatting.RESET + "Survival Compass: "+TextFormatting.DARK_AQUA + locName);
 
 		} else if (getIndexFromNbt(stack) < 9) {
 			int[] locArray = new int[] { x, z };
@@ -136,6 +140,7 @@ public class NbtTagHelper {
 			tag.setString(nameID, locName);
 			stack.setTagCompound(tag);
 			ChatHelper.notifyLocationCreate(p, locName);
+			stack.setStackDisplayName(TextFormatting.RESET + "Survival Compass: "+TextFormatting.DARK_AQUA + locName);
 
 		} else {
 			ChatHelper.notifyPlayerLocationFull(p);
@@ -189,6 +194,12 @@ public class NbtTagHelper {
 		return 0;
 	}
 
+	/*
+	 * Deletes a location If the location is the only one stored, erase NBT tags
+	 * entirely
+	 * 
+	 */
+
 	public static void deleteLocation(ItemStack stack) {
 		if (hasRequiredTags(stack)) {
 
@@ -203,7 +214,7 @@ public class NbtTagHelper {
 				tag.removeTag("loc" + selector);
 				stack.setTagCompound(tag);
 
-				updateLocationIndex(stack, selector +1);
+				updateLocationIndex(stack, selector + 1);
 
 			}
 
@@ -211,10 +222,16 @@ public class NbtTagHelper {
 
 	}
 
+	/*
+	 * Location update function Lowers Index and Selector, adjusts name &
+	 * location suffix to the now corrected index number
+	 * 
+	 */
+
 	private static void updateLocationIndex(ItemStack stack, int startIndex) {
 
 		for (int i = startIndex; i < 10; i++) {
-			
+
 			if (stack.getTagCompound().hasKey("name" + i)) {
 				NBTTagCompound tag = stack.getTagCompound();
 				String nameID = tag.getString("name" + i);
@@ -229,20 +246,18 @@ public class NbtTagHelper {
 			} else {
 				NBTTagCompound tag = stack.getTagCompound();
 				int index = getIndexFromNbt(stack);
-				
+
 				tag.removeTag("Index");
 				tag.setInteger("Index", index - 1);
 				tag.removeTag("Selector");
-				tag.setInteger("Selector", index -1);
-				
+				tag.setInteger("Selector", index - 1);
+
 				stack.setTagCompound(tag);
-				
+				stack.setStackDisplayName(TextFormatting.RESET + "Survival Compass: "+TextFormatting.DARK_AQUA + stack.getTagCompound().getString("name" + (index-1)));
 				i = 13;
 			}
 
 		}
-		
-
 
 	}
 
