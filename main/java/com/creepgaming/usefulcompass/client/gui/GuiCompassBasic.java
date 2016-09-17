@@ -43,6 +43,7 @@ public class GuiCompassBasic extends GuiScreen {
 		this.nameField.setTextColor(-1);
 		this.nameField.setDisabledTextColour(-1);
 		this.nameField.setMaxStringLength(12);
+		this.nameField.setFocused(true);
 
 	}
 
