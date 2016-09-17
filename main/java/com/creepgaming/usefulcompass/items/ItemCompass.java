@@ -16,6 +16,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -157,6 +158,12 @@ public class ItemCompass extends Item {
 
 		}
 		
+		if(entity.getEntityWorld().isRemote && !entity.isSneaking()){
+			if(stack.hasTagCompound()){
+			
+			((EntityPlayer) entity).addChatComponentMessage(new TextComponentString("nbt tag= " + stack.getTagCompound().toString() ));
+		}
+		}
 
 		return super.onEntitySwing(entity, stack);
 	}

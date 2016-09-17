@@ -196,15 +196,14 @@ public class NbtTagHelper {
 			int selector = getSelectorFromNbt(stack);
 
 			if (index == 0) {
-				NBTTagCompound tag = new NBTTagCompound();
-				stack.setTagCompound(tag);
+				stack.setTagCompound(null);
 			} else if (index > 0) {
 				NBTTagCompound tag = stack.getTagCompound();
 				tag.removeTag("name" + selector);
 				tag.removeTag("loc" + selector);
 				stack.setTagCompound(tag);
 
-				updateLocationIndex(stack, selector);
+				updateLocationIndex(stack, selector +1);
 
 			}
 
@@ -214,9 +213,10 @@ public class NbtTagHelper {
 
 	private static void updateLocationIndex(ItemStack stack, int startIndex) {
 
-		for (int i = startIndex; i < 11; i++) {
-			NBTTagCompound tag = stack.getTagCompound();
-			if (tag.hasKey("name" + i)) {
+		for (int i = startIndex; i < 10; i++) {
+			
+			if (stack.getTagCompound().hasKey("name" + i)) {
+				NBTTagCompound tag = stack.getTagCompound();
 				String nameID = tag.getString("name" + i);
 				int[] localArray = tag.getIntArray("loc" + i);
 
@@ -227,17 +227,17 @@ public class NbtTagHelper {
 				stack.setTagCompound(tag);
 
 			} else {
-				
+				NBTTagCompound tag = stack.getTagCompound();
 				int index = getIndexFromNbt(stack);
 				
 				tag.removeTag("Index");
 				tag.setInteger("Index", index - 1);
 				tag.removeTag("Selector");
-				tag.setInteger("Selector", startIndex -1);
+				tag.setInteger("Selector", index -1);
 				
 				stack.setTagCompound(tag);
 				
-				i = 12;
+				i = 13;
 			}
 
 		}

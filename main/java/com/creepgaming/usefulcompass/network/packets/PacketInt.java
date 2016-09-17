@@ -58,14 +58,17 @@ public class PacketInt implements IMessage {
 			if (serverPlayer.getHeldItemMainhand().getItem() != null
 					&& serverPlayer.getHeldItemMainhand().getItem() == ItemRegister.itemCompass) {
 				
-				String locName = serverPlayer.getHeldItemMainhand().getTagCompound().getString("name" + serverPlayer.getHeldItemMainhand().getTagCompound().getInteger("Selector"));
 				
-				if(serverPlayer.getHeldItemMainhand().getTagCompound().hasKey("Selector")){
 				
+				
+				if(NbtTagHelper.hasRequiredTags(serverPlayer.getHeldItemMainhand())){
+					
+					String locName = serverPlayer.getHeldItemMainhand().getTagCompound().getString("name" + serverPlayer.getHeldItemMainhand().getTagCompound().getInteger("Selector"));
+		
 				ChatHelper.notifyLocationDelete(serverPlayer, locName);
-				}
-				NbtTagHelper.deleteLocation(serverPlayer.getHeldItemMainhand());
 
+				NbtTagHelper.deleteLocation(serverPlayer.getHeldItemMainhand());
+				}
 
 			} else if (serverPlayer.getHeldItemOffhand().getItem() != null
 					&& serverPlayer.getHeldItemOffhand().getItem() == ItemRegister.itemCompass) {
